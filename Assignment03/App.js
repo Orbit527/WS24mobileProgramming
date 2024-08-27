@@ -1,19 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import {useState} from 'react';
-import {StyleSheet, Text, View, Button, Alert, TextInput} from 'react-native';
+import {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, Button, Alert, TextInput, FlatList} from 'react-native';
 
 export default function App() {
 
-  const [input1, setInput1] = useState("");
-  const [input2, setInput2] = useState("");
+  const [input1, setInput1] = useState();
+  const [input2, setInput2] = useState();
   const [result, setResult] = useState(0);
+  const [history, setHistory] = useState([]);
 
-  const add = () => {
-    setResult(Number(input1) + Number(input2));
-  }
+  const calculate = (operation) => {
+    const num1 = Number(input1);
+    const num2 = Number(input2);
 
-  const subtract = () => {
-    setResult(Number(input1) - Number(input2));
+    if(isNaN(input1) || input1 === "" || isNaN(input2) || input2 === "") {
+      Alert.alert("Please enter only numbers!");
+    } else if (operation == "add") {
+      const result = num1 + num2;
+      setResult(result);
+      setHistory([input1 + " + " + input2 + " = " + result, ...history]);
+    } else if (operation == "sub") {
+      const result = num1 - num2;
+      setResult(result);
+      setHistory([input1 + " - " + input2 + " = " + result, ...history]);
+    }
   }
 
   return (
@@ -34,9 +44,20 @@ export default function App() {
           keyboardType={"numeric"}
         />
       </View>
-      <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-around'}}>
-        <Button title="Add" onPress={add} color={"blue"}/>
-        <Button title="Subtract" onPress={subtract} color={"blue"}/>
+      <View style={{flex: 0, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-around'}}>
+        <Button title="Add" onPress={() => calculate('add')} color={"blue"}/>
+        <Button title="Subtract" onPress={() => calculate('sub')} color={"blue"}/>
+      </View>
+      <View style={{flex: 2, flexDirection: 'col', alignItems: 'center'}}>
+        <Text style={styles.text}>History</Text>
+        <FlatList 
+          style={{width: "100"}}
+          data={history}
+          renderItem={({item}) =>
+            <Text style={styles.text}>{item}</Text>
+          }
+          ListEmptyComponent={<Text>No calculations yet...</Text>}
+        />
       </View>
       <StatusBar style="auto" />
     </View>
