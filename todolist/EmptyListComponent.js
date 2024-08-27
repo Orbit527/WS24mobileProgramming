@@ -1,7 +1,8 @@
 import { Text } from "react-native";
+import { styles } from './Stylesheet'
 
 export default function EmptyListComponent() {
     return (
-        <Text style={{fontSize: 20}}>No data available</Text>
+        <Text style={styles.standardtext}>No tasks to do...</Text>
     );
 }
