@@ -45,23 +45,10 @@ export default function Home({ navigation }) {
               keyboardType={"numeric"}
             />
           </View>
-          <View style={{flex: 0, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-around'}}>
+          <View style={{flex: 1, flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-around'}}>
             <Button title="Add" onPress={() => calculate('add')} color={"blue"}/>
             <Button title="Subtract" onPress={() => calculate('sub')} color={"blue"}/>
-            <Button title="History" onPress={() => navigation.navigate("History", {test: "test123"})}></Button>
-          </View>
-
-
-          <View style={{flex: 2, flexDirection: 'col', alignItems: 'center'}}>
-            <Text style={styles.text}>History</Text>
-            <FlatList 
-              style={{width: "100"}}
-              data={history}
-              renderItem={({item}) =>
-                <Text style={styles.text}>{item}</Text>
-              }
-              ListEmptyComponent={<Text>No calculations yet...</Text>}
-            />
+            <Button title="History" onPress={() => navigation.navigate("History", {history: history})}></Button>
           </View>
           <StatusBar style="auto" />
         </View>
