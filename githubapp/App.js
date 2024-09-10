@@ -1,6 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TextInput, Button, FlatList, ActivityIndicator } from "react-native";
 import { useState } from "react";
+import RepositoryList from "./RepositoryList";
+import { fetchRepositories } from "./api";
 
 export default function App() {
 
@@ -10,19 +12,14 @@ export default function App() {
 
   const handleFetch = () => {
     setLoading(true);
-    fetch(`https://api.github.com/search/repositories?q=${keyword}`)
-    .then(response => { //then takes a function as an argument
-      if (!response.ok)
-        throw new Error("Something went wrong!" + response.statusText);
-      
+    fetchRepositories(keyword)
+    .then(data => {
+      setRepositories(data.items)
       setKeyword("");
-      return response.json();
-    })
-    .then(data => setRepositories(data.items)) //only save items, because we are only interested in them
+    }) //only save items, because we are only interested in them
     .catch(err => console.error(err))
     .finally(() => setLoading(false))
   }
-
 
 
   return (
@@ -35,19 +32,7 @@ export default function App() {
       />
       <Button title="Search" onPress={handleFetch} disabled={loading}/>
       <ActivityIndicator size="large" animating={loading}></ActivityIndicator>
-      <FlatList
-        data={repositories}
-        renderItem={({item}) => 
-          <View style={{ margin: 10 }}>
-            <Text style={{ fontSize: 22, fontWeight: "bold" }}>
-              {item.full_name}
-            </Text>
-            <Text style={{ fontSize: 18 }}>
-              {item.description}
-            </Text>
-          </View>
-        }
-      />
+      <RepositoryList repositories={repositories}/>
       <StatusBar style="auto" />
     </View>
   );
