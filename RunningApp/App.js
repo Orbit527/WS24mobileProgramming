@@ -14,6 +14,8 @@ import { CommonActions } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
+// Nagivation was mostly taken from: https://callstack.github.io/react-native-paper/docs/components/BottomNavigation/BottomNavigationBar
+
 export default function App() {
   return (
     <PaperProvider>

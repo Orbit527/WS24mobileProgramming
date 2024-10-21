@@ -12,6 +12,7 @@ export default function Home() {
 
       <View style={styles.container}>
         <Text variant="titleLarge">Home</Text>
+        <Text variant="titleLarge">Content</Text>
       </View>
     </View>
   );
